@@ -14,7 +14,8 @@ import sys
 import os
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QUrl
+from PyQt5.QtMultimedia import QSoundEffect
 class Window(QWidget):
  
     def __init__(self,width,height):
@@ -32,6 +33,23 @@ class Window(QWidget):
         self.bigLabel.move(50,50)
         self.bigLabel.hide()
         self.mode = 0
+        self.soundClick = QSoundEffect()
+        self.soundClickWah = QSoundEffect()
+        self.soundLoop = QSoundEffect()
+        self.soundLoopWah = QSoundEffect()
+        self.soundShift = QSoundEffect()
+        self.soundShiftWah = QSoundEffect()
+        self.soundClick.setSource(QUrl.fromLocalFile(os.path.join('sounds','PianoNote.wav')))
+        self.soundClickWah.setSource(QUrl.fromLocalFile(os.path.join('sounds','PianoNoteWah.wav')))
+        self.soundShift.setSource(QUrl.fromLocalFile(os.path.join('sounds','PianoMultiNote.wav')))
+        self.soundShiftWah.setSource(QUrl.fromLocalFile(os.path.join('sounds','PianoMultiNoteWah.wav')))
+        self.soundLoop.setSource(QUrl.fromLocalFile(os.path.join('sounds','loop08.wav')))
+        self.soundLoopWah.setSource(QUrl.fromLocalFile(os.path.join('sounds','loop08Wah.wav')))
+        self.soundLoop.setLoopCount(QSoundEffect.Infinite)
+        self.soundLoopWah.setLoopCount(QSoundEffect.Infinite)
+        self.soundLoop.play()
+        self.soundLoopWah.play()
+        self.soundLoopWah.setMuted(1)
         self.initUI()
  
     def initUI(self):
@@ -138,16 +156,36 @@ class Window(QWidget):
     def keyPressEvent(self, event):
         if(event.key() == 16777234):
             self.moveIndexLeft()
+            if(self.mode == 0):
+                self.soundClick.play()
+            else:
+                self.soundClickWah.play()
         if(event.key() == 16777236):
             self.moveIndexRight()
+            if(self.mode == 0):
+                self.soundClick.play()
+            else:
+                self.soundClickWah.play()
         if(event.key() == 16777235):
             self.zoomIn()
+            self.soundLoop.setMuted(1)
+            self.soundLoopWah.setMuted(0)
         if(event.key() == 16777237):
             self.zoomOut()
+            self.soundLoopWah.setMuted(1)
+            self.soundLoop.setMuted(0)
         if(event.key() == 44):
             self.shiftLeft()
+            if(self.mode == 0):
+                self.soundShift.play()
+            else:
+                self.soundShiftWah.play()
         if(event.key() == 46):
             self.shiftRight()
+            if(self.mode == 0):
+                self.soundShift.play()
+            else:
+                self.soundShiftWah.play()
     def mousePressEvent(self, QMouseEvent):
         if(self.mode == 0):
             setPicTo = -1
