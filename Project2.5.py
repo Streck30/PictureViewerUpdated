@@ -50,6 +50,7 @@ class Window(QWidget):
         self.saveTagButton.clicked.connect(self.saveClick)
         self.saveTagButton.hide()
         self.setFocus()
+        self.currentString = []
         self.mode = 0
         #setting up the sounds to use
         self.soundClick = QSoundEffect()
@@ -75,8 +76,10 @@ class Window(QWidget):
     def tagClick(self):
         tagValue = self.textBox.text()
        # currentOffset[self.index % len(self.pixList)] += 25
-        self.tagLabels[self.index % len(self.pixList)].setText(tagValue + "\n")
+        self.currentString[self.index % len(self.pixList)] += (tagValue + "\n")
+        self.tagLabels[self.index % len(self.pixList)].setText(self.currentString[self.index % len(self.pixList)])
         self.textBox.setText("")
+        self.setFocus()
     def saveClick(self):
         print("test")
     def initUI(self):
@@ -100,9 +103,11 @@ class Window(QWidget):
             self.pixList.append(QPixmap(os.path.join('data', file)))
             self.bigPixList.append(QPixmap(os.path.join('data',file)))
             self.tagLabels.append(QLabel(self))
+            self.currentString.append("")
             self.tagLabels[i].resize(self.width / 8, self.height)
             self.tagLabels[i].move(self.width * 7 / 8, 0)
-            self.tagLabels[i].setStyleSheet('background-color: green')
+            self.tagLabels[i].setStyleSheet('background-color: green; font: bold 14px')
+            self.tagLabels[i].setAlignment(Qt.AlignTop)
             self.tagLabels[i].hide()
             if(self.pixList[i].height() > self.height / 6 - 10):
                 self.pixList[i] = self.pixList[i].scaledToHeight(self.height / 6 - 10)
