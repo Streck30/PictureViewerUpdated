@@ -50,8 +50,10 @@ class Window(QWidget):
         self.saveTagButton.clicked.connect(self.saveClick)
         self.saveTagButton.hide()
         self.setFocus()
+        #item that holds the current string to be stored as tag
         self.currentString = []
         self.mode = 0
+        #Sets up the warning message for too long strings
         self.warningMessage = QLabel(self)
         self.warningMessage.resize(self.width / 5, self.height / 16)
         self.warningMessage.setStyleSheet("background-color: red; font: bold 14px")
@@ -77,12 +79,11 @@ class Window(QWidget):
         self.soundLoopWah.play()
         self.soundLoopWah.setMuted(1)
         #offest for each tag added
-      #  self.currentOffset = []
         self.initUI()
+    #Adds the tag to the list triggered by clicking on the button
     def tagClick(self):
         tagValue = self.textBox.text()
         if(len(tagValue) < 11):
-       # currentOffset[self.index % len(self.pixList)] += 25
             self.currentString[self.index % len(self.pixList)] += (tagValue + "\n")
             self.tagLabels[self.index % len(self.pixList)].setText(self.currentString[self.index % len(self.pixList)])
             self.textBox.setText("")
@@ -109,7 +110,6 @@ class Window(QWidget):
         #places pictures into pixmap array
         i = 0
         for file in os.listdir('data'):
-           # self.currentOffset.append(0)
             self.pixList.append(QPixmap(os.path.join('data', file)))
             self.bigPixList.append(QPixmap(os.path.join('data',file)))
             self.tagLabels.append(QLabel(self))

@@ -87,6 +87,7 @@ class Window(QWidget):
             self.tagLabels[self.index % len(self.pixList)].setText(self.currentString[self.index % len(self.pixList)])
             self.textBox.setText("")
             self.setFocus()
+            self.warningMessage.hide()
         else:
             self.warningMessage.show()
     def saveClick(self):
