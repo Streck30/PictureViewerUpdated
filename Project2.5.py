@@ -12,7 +12,7 @@ Last edited: 9/4/17
 
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QAction, QLineEdit, QMessageBox
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtMultimedia import QSoundEffect
@@ -29,10 +29,28 @@ class Window(QWidget):
         self.pixList = []
         self.label = []
         self.bigLabel = QLabel(self)
-        self.bigLabel.resize(self.width - 100, self.height - 100)
-        self.bigLabel.move(50,50)
+        self.bigLabel.resize(self.width * 3 / 4, self.height * 3 / 4)
+        self.bigLabel.move(self.width / 8, self.height / 8)
         self.bigLabel.hide()
+        #adding buttons and textbox
+        self.textBox = QLineEdit(self)
+        self.textBox.setStyleSheet("color: rgb(255, 255, 255);")
+        self.textBox.move(self.width / 6, self.height * 7 / 8)
+        self.textBox.resize(150,self.height / 16)
+        self.textBox.hide()
+        self.tagButton = QPushButton('Add Tag', self)
+        self.tagButton.setStyleSheet("background-color: rgb(125,125,125);")
+        self.tagButton.move(self.width / 6, self.height * 15 / 16)
+        self.tagButton.clicked.connect(self.tagClick)
+        self.tagButton.hide()
+        self.saveTagButton = QPushButton('Save All Tags', self)
+        self.saveTagButton.setStyleSheet("background-color: rgb(125, 125, 125);")
+        self.saveTagButton.move(self.width / 6 + 75, self.height * 15 / 16)
+        self.saveTagButton.clicked.connect(self.saveClick)
+        self.saveTagButton.hide()
+        self.setFocus()
         self.mode = 0
+        #setting up the sounds to use
         self.soundClick = QSoundEffect()
         self.soundClickWah = QSoundEffect()
         self.soundLoop = QSoundEffect()
@@ -50,8 +68,16 @@ class Window(QWidget):
         self.soundLoop.play()
         self.soundLoopWah.play()
         self.soundLoopWah.setMuted(1)
+        #offest for each tag added
+        self.currentOffset = []
         self.initUI()
- 
+    def tagClick(self):
+        tagValue = self.textBox.text()
+        currentOffset[self.index % len(self.pixList)] += 25
+        print(tagValue)
+        self.textBox.setText("")
+    def saveClick(self):
+        print("test")
     def initUI(self):
         # title of window
         self.setWindowTitle('PyQt5 Main Window')
@@ -69,16 +95,17 @@ class Window(QWidget):
         #places pictures into pixmap array
         i = 0
         for file in os.listdir('data'):
+            self.currentOffset.append(0)
             self.pixList.append(QPixmap(os.path.join('data', file)))
             self.bigPixList.append(QPixmap(os.path.join('data',file)))
             if(self.pixList[i].height() > self.height / 6 - 10):
                 self.pixList[i] = self.pixList[i].scaledToHeight(self.height / 6 - 10)
             if(self.pixList[i].width() > self.width / 6 - 10):
                 self.pixList[i] = self.pixList[i].scaledToWidth(self.width / 6 - 10)
-            if(self.bigPixList[i].width() > self.width - 100):
-                self.bigPixList[i] = self.bigPixList[i].scaledToWidth(self.width - 100)
-            if(self.bigPixList[i].height() > self.height-100):
-                self.bigPixList[i] = self.bigPixList[i].scaledToHeight(self.height - 100)
+            if(self.bigPixList[i].width() > self.width*3/4 ):
+                self.bigPixList[i] = self.bigPixList[i].scaledToWidth(self.width*3/4)
+            if(self.bigPixList[i].height() > self.height*3/4):
+                self.bigPixList[i] = self.bigPixList[i].scaledToHeight(self.height*3/4)
             i = i + 1
         self.bigLabel.setAlignment(Qt.AlignCenter)
         self.bigLabel.setPixmap(self.bigPixList[0])
@@ -122,12 +149,18 @@ class Window(QWidget):
             self.label[i].hide()
         self.bigLabel.setAlignment(Qt.AlignCenter)
         self.bigLabel.show()
+        self.tagButton.show()
+        self.saveTagButton.show()
+        self.textBox.show()
     #Goes back to default view
     def zoomOut(self):
         self.mode = 0
         self.bigLabel.hide()
         for i in range(0, 5, 1):
             self.label[i].show()
+        self.tagButton.hide()
+        self.saveTagButton.hide()
+        self.textBox.hide()
     #shifts the frame 5 pictures to the left
     def shiftLeft(self):
         self.label[self.index % 5].setStyleSheet('background-color:red')
@@ -187,6 +220,8 @@ class Window(QWidget):
             else:
                 self.soundShiftWah.play()
     def mousePressEvent(self, QMouseEvent):
+        if(QMouseEvent.y() < self.height / 7 * 8 or QMouseEvent.y() > self.height / 15 * 16 and QMouseEvent.x() < self.width / 6 or QMouseEvent.x() > self.width / 3):
+            self.setFocus()
         if(self.mode == 0):
             setPicTo = -1
             if(QMouseEvent.y() > self.height / 3 - 1 and QMouseEvent.y() < self.height / 2 + 1):
