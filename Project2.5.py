@@ -128,6 +128,7 @@ class Window(QWidget):
                 j = j + 1
         self.label[self.index % 5].setStyleSheet('background-color: blue')
         self.bigLabel.setPixmap(self.bigPixList[self.index % len(self.pixList)])
+        self.textBox.setText("")
     #Moves the pointer one picture to the right.  If it breaks the bounds of QLabel it will move the frame
     def moveIndexRight(self):
         j = 0
@@ -142,6 +143,7 @@ class Window(QWidget):
                 j = j + 1
         self.label[self.index % 5].setStyleSheet('background-color: blue')
         self.bigLabel.setPixmap(self.bigPixList[self.index % len(self.pixList)])
+        self.textBox.setText("")
     #Zooms in on the specific picture selected and puts it into a 700 x 500 frame    
     def zoomIn(self):
         self.mode = 1
@@ -173,6 +175,7 @@ class Window(QWidget):
             j = j + 1
         self.label[self.index % 5].setStyleSheet('background-color: blue')
         self.bigLabel.setPixmap(self.bigPixList[self.index % len(self.pixList)])
+        self.textBox.setText("")
     #shifts the frame 5 pictures to the right
     def shiftRight(self):
         self.label[self.index % 5].setStyleSheet('background-color: red')
@@ -185,6 +188,7 @@ class Window(QWidget):
             j = j + 1
         self.label[self.index % 5].setStyleSheet('background-color: blue')
         self.bigLabel.setPixmap(self.bigPixList[self.index % len(self.pixList)])
+        self.textBox.setText("")
     #all of the key inputs and their responses in functions
     def keyPressEvent(self, event):
         if(event.key() == 16777234):
