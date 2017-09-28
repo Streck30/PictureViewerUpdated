@@ -75,7 +75,7 @@ class Window(QWidget):
     def tagClick(self):
         tagValue = self.textBox.text()
        # currentOffset[self.index % len(self.pixList)] += 25
-        self.tagLabels[self.index % len(self.pixList)].setText(tagValue + "\n")
+        self.tagLabels[self.index % len(self.pixList)].setText(tagValue + "/n")
         self.textBox.setText("")
     def saveClick(self):
         print("test")
