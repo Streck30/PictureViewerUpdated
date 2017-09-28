@@ -52,6 +52,12 @@ class Window(QWidget):
         self.setFocus()
         self.currentString = []
         self.mode = 0
+        self.warningMessage = QLabel(self)
+        self.warningMessage.resize(self.width / 5, self.height / 16)
+        self.warningMessage.setStyleSheet("background-color: red; font: bold 14px")
+        self.warningMessage.setText("String too long")
+        self.warningMessage.move(self.width / 2, self.height * 7 / 8)
+        self.warningMessage.hide()
         #setting up the sounds to use
         self.soundClick = QSoundEffect()
         self.soundClickWah = QSoundEffect()
@@ -75,11 +81,14 @@ class Window(QWidget):
         self.initUI()
     def tagClick(self):
         tagValue = self.textBox.text()
+        if(len(tagValue) < 11):
        # currentOffset[self.index % len(self.pixList)] += 25
-        self.currentString[self.index % len(self.pixList)] += (tagValue + "\n")
-        self.tagLabels[self.index % len(self.pixList)].setText(self.currentString[self.index % len(self.pixList)])
-        self.textBox.setText("")
-        self.setFocus()
+            self.currentString[self.index % len(self.pixList)] += (tagValue + "\n")
+            self.tagLabels[self.index % len(self.pixList)].setText(self.currentString[self.index % len(self.pixList)])
+            self.textBox.setText("")
+            self.setFocus()
+        else:
+            self.warningMessage.show()
     def saveClick(self):
         print("test")
     def initUI(self):
@@ -106,9 +115,8 @@ class Window(QWidget):
             self.currentString.append("")
             self.tagLabels[i].resize(self.width / 8, self.height)
             self.tagLabels[i].move(self.width * 7 / 8, 0)
-            self.tagLabels[i].setStyleSheet('background-color: green; font: bold 14px')
+            self.tagLabels[i].setStyleSheet('border-color: grey; border-style: outset; border-width: 5px; font: bold 14px; color: white')
             self.tagLabels[i].setAlignment(Qt.AlignTop)
-            self.tagLabels[i].setAlignment(Qt.AlignCenter)
             self.tagLabels[i].hide()
             if(self.pixList[i].height() > self.height / 6 - 10):
                 self.pixList[i] = self.pixList[i].scaledToHeight(self.height / 6 - 10)
