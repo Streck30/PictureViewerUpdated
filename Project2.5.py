@@ -78,7 +78,6 @@ class Window(QWidget):
         self.soundLoop.play()
         self.soundLoopWah.play()
         self.soundLoopWah.setMuted(1)
-        #offest for each tag added
         self.initUI()
     #Adds the tag to the list triggered by clicking on the button
     def tagClick(self):
