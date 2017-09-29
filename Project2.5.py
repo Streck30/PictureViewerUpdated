@@ -79,7 +79,7 @@ class Window(QWidget):
         self.soundLoopWah.play()
         self.soundLoopWah.setMuted(1)
         self.initUI()
-    #Adds the tag to the list triggered by clicking on the button
+    #Adds the tag to the list triggered by clicking on the button only if the string is less than 11 characters, otherwise shows warning message
     def tagClick(self):
         tagValue = self.textBox.text()
         if(len(tagValue) < 11):
@@ -91,7 +91,11 @@ class Window(QWidget):
         else:
             self.warningMessage.show()
     def saveClick(self):
-        print("test")
+        f = open('SavedTags.txt','w')
+        f.truncate()
+        for i in range(0, len(self.pixList), 1):
+            f.write(self.tagLabels[i].text())
+            f.write("#")
     def initUI(self):
         # title of window
         self.setWindowTitle('PyQt5 Main Window')
@@ -134,6 +138,19 @@ class Window(QWidget):
             self.label[i].setPixmap(self.pixList[i])
             self.label[i].setAlignment(Qt.AlignCenter)
         self.show()
+        self.loadTags()
+    def loadTags(self):
+        f = open('SavedTags.txt','r')
+        tempString = f.read()
+        j = 0
+        for i in range(0, len(tempString), 1):
+            if(tempString[i] != "#"):
+                self.currentString[j]+=tempString[i]
+            else:
+                self.tagLabels[j].setText(self.currentString[j])
+                self.currentString[j] = ""
+                j = j + 1
+
     #Moves the pointer to the picture one to the left.  If it breaks the bounds, it will move the frame
     def moveIndexLeft(self):
         j = 0
