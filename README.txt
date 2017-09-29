@@ -1,0 +1,1 @@
+In order to run, navigate to folder and type "python Project2.5.py  Must contain all files including data, sound, and SavedTags
