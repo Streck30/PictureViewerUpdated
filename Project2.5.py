@@ -148,7 +148,6 @@ class Window(QWidget):
                 self.currentString[j]+=tempString[i]
             else:
                 self.tagLabels[j].setText(self.currentString[j])
-                self.currentString[j] = ""
                 j = j + 1
 
     #Moves the pointer to the picture one to the left.  If it breaks the bounds, it will move the frame

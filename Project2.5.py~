@@ -92,6 +92,7 @@ class Window(QWidget):
             self.warningMessage.show()
     def saveClick(self):
         f = open('SavedTags.txt','w')
+        f.truncate()
         for i in range(0, len(self.pixList), 1):
             f.write(self.tagLabels[i].text())
             f.write("#")
@@ -144,8 +145,10 @@ class Window(QWidget):
         j = 0
         for i in range(0, len(tempString), 1):
             if(tempString[i] != "#"):
-                self.tagLabels[j].setText(f.readline())
+                self.currentString[j]+=tempString[i]
             else:
+                self.tagLabels[j].setText(self.currentString[j])
+                self.currentString[j] = ""
                 j = j + 1
 
     #Moves the pointer to the picture one to the left.  If it breaks the bounds, it will move the frame
